@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
                      "including charges, payouts, customers, bridge, paykeys, and embedded account management."
   spec.homepage = "https://github.com/dpaluy/straddle_pay"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.2.0"
+  spec.required_ruby_version = ">= 3.4.0"
 
   spec.metadata["rubygems_mfa_required"] = "true"
   spec.metadata["homepage_uri"] = spec.homepage
@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
     ls.readlines("\x0", chomp: true).reject do |f|
       (f == gemspec) ||
         f.start_with?(*%w[bin/ Gemfile .gitignore test/ .github/ .rubocop.yml docs/ .agents/ AGENTS.md CLAUDE.md
-                         Rakefile])
+                          Rakefile])
     end
   end
   spec.require_paths = ["lib"]
