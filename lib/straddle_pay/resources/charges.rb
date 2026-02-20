@@ -16,13 +16,16 @@ module StraddlePay
       # @param consent_type [String] consent type (e.g. "internet")
       # @param device [Hash] device info (must include :ip_address)
       # @param external_id [String] your external reference ID
+      # @param config [Hash] charge processing configuration
       # @param options [Hash] additional fields or header params
       # @return [Hash] created charge
-      def create(paykey:, amount:, currency:, description:, payment_date:, consent_type:, device:, external_id:,
-                 **options)
+      def create(
+        paykey:, amount:, currency:, description:, payment_date:, consent_type:,
+        device:, external_id:, config:, **options
+      )
         payload = {
           paykey: paykey, amount: amount, currency: currency, description: description,
-          payment_date: payment_date, consent_type: consent_type, device: device,
+          payment_date: payment_date, consent_type: consent_type, device: device, config: config,
           external_id: external_id, **options
         }.compact
         headers = extract_headers(payload)
@@ -81,6 +84,17 @@ module StraddlePay
       def unmask(id, **options)
         headers = extract_headers(options)
         @client.get("v1/charges/#{id}/unmask", headers: headers)
+      end
+
+      # Resubmit a failed or reversed charge.
+      #
+      # @param id [String] charge ID
+      # @param options [Hash] optional request body or header params
+      # @return [Hash] resubmitted charge
+      def resubmit(id, **options)
+        payload = options.compact
+        headers = extract_headers(payload)
+        @client.post("v1/charges/#{id}/resubmit", payload.empty? ? nil : payload, headers: headers)
       end
     end
   end

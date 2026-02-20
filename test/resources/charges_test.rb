@@ -22,7 +22,7 @@ class ChargesTest < Minitest::Test
     result = @client.charges.create(
       paykey: "pk_123", amount: 10_000, currency: "usd", description: "Test",
       payment_date: "2026-03-01", consent_type: "internet",
-      device: { ip_address: "1.2.3.4" }, external_id: "ext_1"
+      device: { ip_address: "1.2.3.4" }, external_id: "ext_1", config: {}
     )
     assert_equal "ch_123", result["id"]
     assert_requested stub
@@ -88,9 +88,18 @@ class ChargesTest < Minitest::Test
     @client.charges.create(
       paykey: "pk_123", amount: 10_000, currency: "usd", description: "Test",
       payment_date: "2026-03-01", consent_type: "internet",
-      device: { ip_address: "1.2.3.4" }, external_id: "ext_1",
+      device: { ip_address: "1.2.3.4" }, external_id: "ext_1", config: {},
       straddle_account_id: "acct_456"
     )
+    assert_requested stub
+  end
+
+  def test_resubmit
+    stub = stub_request(:post, "https://api.example.com/v1/charges/ch_123/resubmit")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "ch_123", status: "resubmitted" } }))
+
+    result = @client.charges.resubmit("ch_123")
+    assert_equal "resubmitted", result["status"]
     assert_requested stub
   end
 end

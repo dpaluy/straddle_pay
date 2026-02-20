@@ -64,4 +64,38 @@ class PaykeysTest < Minitest::Test
     @client.paykeys.review("pk_123", status: "approved")
     assert_requested stub
   end
+
+  def test_get_review
+    stub = stub_request(:get, "https://api.example.com/v1/paykeys/pk_123/review")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "pk_123", status: "in_review" } }))
+
+    result = @client.paykeys.get_review("pk_123")
+    assert_equal "in_review", result["status"]
+    assert_requested stub
+  end
+
+  def test_refresh_review
+    stub = stub_request(:put, "https://api.example.com/v1/paykeys/pk_123/refresh_review")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "pk_123" } }))
+
+    @client.paykeys.refresh_review("pk_123")
+    assert_requested stub
+  end
+
+  def test_refresh_balance
+    stub = stub_request(:put, "https://api.example.com/v1/paykeys/pk_123/refresh_balance")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "pk_123" } }))
+
+    @client.paykeys.refresh_balance("pk_123")
+    assert_requested stub
+  end
+
+  def test_unblock
+    stub = stub_request(:patch, "https://api.example.com/v1/paykeys/pk_123/unblock")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "pk_123", blocked: false } }))
+
+    result = @client.paykeys.unblock("pk_123")
+    assert_equal false, result["blocked"]
+    assert_requested stub
+  end
 end

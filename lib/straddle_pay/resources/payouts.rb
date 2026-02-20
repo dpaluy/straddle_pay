@@ -84,6 +84,17 @@ module StraddlePay
         headers = extract_headers(options)
         @client.get("v1/payouts/#{id}/unmask", headers: headers)
       end
+
+      # Resubmit a failed or reversed payout.
+      #
+      # @param id [String] payout ID
+      # @param options [Hash] optional request body or header params
+      # @return [Hash] resubmitted payout
+      def resubmit(id, **options)
+        payload = options.compact
+        headers = extract_headers(payload)
+        @client.post("v1/payouts/#{id}/resubmit", payload.empty? ? nil : payload, headers: headers)
+      end
     end
   end
 end

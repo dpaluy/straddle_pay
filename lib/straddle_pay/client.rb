@@ -36,6 +36,8 @@ module StraddlePay
     def customers      = @customers ||= Resources::Customers.new(self)
     # @return [Resources::Bridge]
     def bridge         = @bridge ||= Resources::Bridge.new(self)
+    # @return [Resources::AccountSettings]
+    def account_settings = @account_settings ||= Resources::AccountSettings.new(self)
     # @return [Resources::Paykeys]
     def paykeys        = @paykeys ||= Resources::Paykeys.new(self)
     # @return [Resources::Charges]
@@ -46,6 +48,8 @@ module StraddlePay
     def payments       = @payments ||= Resources::Payments.new(self)
     # @return [Resources::FundingEvents]
     def funding_events = @funding_events ||= Resources::FundingEvents.new(self)
+    # @return [Resources::FundingEventPayments]
+    def funding_event_payments = @funding_event_payments ||= Resources::FundingEventPayments.new(self)
     # @return [Resources::Reports]
     def reports        = @reports ||= Resources::Reports.new(self)
     # @return [Resources::Embed]

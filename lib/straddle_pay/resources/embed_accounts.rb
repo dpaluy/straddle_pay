@@ -5,6 +5,9 @@ module StraddlePay
     # Manage embedded accounts for platform/marketplace use.
     # Accessed via {Embed#accounts}.
     class EmbedAccounts < Base
+      # @return [AccountCapabilityRequests]
+      def capability_requests = @capability_requests ||= AccountCapabilityRequests.new(@client)
+
       # Create an embedded account.
       #
       # @param organization_id [String] parent organization ID
