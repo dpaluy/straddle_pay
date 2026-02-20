@@ -1,0 +1,6 @@
+.agents.yml
+.agents.local.yml
+.claude
+.ruby-lsp
+docs/plans
+*.gem
