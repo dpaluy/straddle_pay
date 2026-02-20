@@ -61,6 +61,18 @@ Idiomatic Ruby gem wrapping the [Straddle API](https://straddle.dev/api-referenc
 - `EmbedRepresentatives` (5 methods)
 - `EmbedLinkedBankAccounts` (6 methods)
 
+## Release Process
+
+Release is automated via `.github/workflows/release.yml` — pushing a `v*` tag triggers `rubygems/release-gem@v1`.
+
+1. Bump `VERSION` in `lib/straddle_pay/version.rb`
+2. Run `bundle install` to update `Gemfile.lock`
+3. Run `bundle exec rake` to verify tests + rubocop
+4. Commit: `git add lib/straddle_pay/version.rb Gemfile.lock && git commit -m "bump to vX.Y.Z"`
+5. Tag and push: `git tag vX.Y.Z && git push origin master --tags`
+
+The CI workflow builds the gem and publishes to RubyGems.org via trusted publishing (OIDC, no API key needed).
+
 ## Do NOT
 
 - Add Sorbet, RBI, or RBS type definitions

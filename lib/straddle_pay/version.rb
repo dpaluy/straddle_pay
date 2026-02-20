@@ -2,5 +2,5 @@
 
 module StraddlePay
   # @return [String] current gem version
-  VERSION = "0.1.3"
+  VERSION = "0.1.4"
 end
