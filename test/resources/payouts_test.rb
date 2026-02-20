@@ -78,4 +78,13 @@ class PayoutsTest < Minitest::Test
     @client.payouts.unmask("po_123")
     assert_requested stub
   end
+
+  def test_resubmit
+    stub = stub_request(:post, "https://api.example.com/v1/payouts/po_123/resubmit")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "po_123", status: "resubmitted" } }))
+
+    result = @client.payouts.resubmit("po_123")
+    assert_equal "resubmitted", result["status"]
+    assert_requested stub
+  end
 end

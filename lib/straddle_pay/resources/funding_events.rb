@@ -10,7 +10,7 @@ module StraddlePay
       # @return [Hash] paginated funding event list
       def list(**options)
         headers = extract_headers(options)
-        @client.get("v1/funding-events", params: options, headers: headers)
+        @client.get("v1/funding_events", params: options, headers: headers)
       end
 
       # Retrieve a funding event by ID.
@@ -19,7 +19,17 @@ module StraddlePay
       # @return [Hash] funding event details
       def get(id, **options)
         headers = extract_headers(options)
-        @client.get("v1/funding-events/#{id}", headers: headers)
+        @client.get("v1/funding_events/#{id}", headers: headers)
+      end
+
+      # Simulate a funding event in sandbox.
+      #
+      # @param options [Hash] simulation payload
+      # @return [Hash] simulated funding event
+      def simulate(**options)
+        payload = options.compact
+        headers = extract_headers(payload)
+        @client.post("v1/funding_events/simulate", payload.empty? ? nil : payload, headers: headers)
       end
     end
   end

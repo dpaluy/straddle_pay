@@ -9,9 +9,9 @@ module StraddlePay
       #
       # @param account_id [String] parent account ID
       # @param bank_account [Hash] bank details (account_number, routing_number)
-      # @param description [String] account description
+      # @param description [String, nil] account description
       # @return [Hash] created linked bank account
-      def create(account_id:, bank_account:, description:, **options)
+      def create(account_id:, bank_account:, description: nil, **options)
         payload = {
           account_id: account_id, bank_account: bank_account,
           description: description, **options

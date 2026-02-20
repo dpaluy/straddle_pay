@@ -68,4 +68,26 @@ class EmbedAccountsTest < Minitest::Test
     @client.embed.accounts.simulate("acct_123", final_status: "active")
     assert_requested stub
   end
+
+  def test_capability_requests_accessor
+    assert_instance_of StraddlePay::Resources::AccountCapabilityRequests, @client.embed.accounts.capability_requests
+  end
+
+  def test_capability_request_create
+    stub = stub_request(:post, "https://api.example.com/v1/accounts/acct_123/capability_requests")
+           .to_return(status: 200, body: JSON.generate({ data: { id: "capreq_123" } }))
+
+    result = @client.embed.accounts.capability_requests.create("acct_123")
+    assert_equal "capreq_123", result["id"]
+    assert_requested stub
+  end
+
+  def test_capability_request_list
+    stub = stub_request(:get, "https://api.example.com/v1/accounts/acct_123/capability_requests")
+           .to_return(status: 200, body: JSON.generate({ data: [{ id: "capreq_123" }] }))
+
+    result = @client.embed.accounts.capability_requests.list("acct_123")
+    assert_instance_of Array, result
+    assert_requested stub
+  end
 end

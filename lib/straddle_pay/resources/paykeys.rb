@@ -52,9 +52,52 @@ module StraddlePay
       #
       # @param id [String] paykey ID
       # @return [Hash] review result
+      # @note Backward compatible method for status updates while in review state.
       def review(id, **options)
         headers = extract_headers(options)
         @client.patch("v1/paykeys/#{id}/review", options, headers: headers)
+      end
+
+      # Get the current review details for a paykey.
+      #
+      # @param id [String] paykey ID
+      # @return [Hash] review details
+      def get_review(id, **options)
+        headers = extract_headers(options)
+        @client.get("v1/paykeys/#{id}/review", headers: headers)
+      end
+
+      # Refresh a paykey's identity review decision.
+      #
+      # @param id [String] paykey ID
+      # @param options [Hash] request body or header params
+      # @return [Hash] refreshed paykey details
+      def refresh_review(id, **options)
+        payload = options.compact
+        headers = extract_headers(payload)
+        @client.put("v1/paykeys/#{id}/refresh_review", payload.empty? ? nil : payload, headers: headers)
+      end
+
+      # Refresh a paykey's balance.
+      #
+      # @param id [String] paykey ID
+      # @param options [Hash] optional request body or header params
+      # @return [Hash] refreshed paykey details
+      def refresh_balance(id, **options)
+        payload = options.compact
+        headers = extract_headers(payload)
+        @client.put("v1/paykeys/#{id}/refresh_balance", payload.empty? ? nil : payload, headers: headers)
+      end
+
+      # Unblock a paykey (R29 unblock flow).
+      #
+      # @param id [String] paykey ID
+      # @param options [Hash] optional request body or header params
+      # @return [Hash] unblocked paykey details
+      def unblock(id, **options)
+        payload = options.compact
+        headers = extract_headers(payload)
+        @client.patch("v1/paykeys/#{id}/unblock", payload.empty? ? nil : payload, headers: headers)
       end
     end
   end

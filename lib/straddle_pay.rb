@@ -25,6 +25,8 @@ module StraddlePay
   autoload :NetworkError, "straddle_pay/errors"
 
   module Resources
+    autoload :AccountSettings, "straddle_pay/resources/account_settings"
+    autoload :AccountCapabilityRequests, "straddle_pay/resources/account_capability_requests"
     autoload :Base, "straddle_pay/resources/base"
     autoload :Charges, "straddle_pay/resources/charges"
     autoload :Payouts, "straddle_pay/resources/payouts"
@@ -35,6 +37,7 @@ module StraddlePay
     autoload :Paykeys, "straddle_pay/resources/paykeys"
     autoload :Payments, "straddle_pay/resources/payments"
     autoload :FundingEvents, "straddle_pay/resources/funding_events"
+    autoload :FundingEventPayments, "straddle_pay/resources/funding_event_payments"
     autoload :Reports, "straddle_pay/resources/reports"
     autoload :Embed, "straddle_pay/resources/embed"
     autoload :EmbedAccounts, "straddle_pay/resources/embed_accounts"

@@ -27,4 +27,14 @@ class BridgeTest < Minitest::Test
   def test_links_accessor
     assert_instance_of StraddlePay::Resources::BridgeLinks, @client.bridge.links
   end
+
+  def test_speedchex
+    stub = stub_request(:post, "https://api.example.com/v1/bridge/speedchex")
+           .with(body: hash_including({ customer_id: "cust_123", speedchex_token: "tok_123" }))
+           .to_return(status: 200, body: JSON.generate({ data: { id: "pk_123" } }))
+
+    result = @client.bridge.speedchex(customer_id: "cust_123", speedchex_token: "tok_123")
+    assert_equal "pk_123", result["id"]
+    assert_requested stub
+  end
 end
