@@ -4,9 +4,23 @@ require "faraday"
 require "json"
 
 module StraddlePay
+  # HTTP client for the Straddle API. Uses Faraday under the hood.
+  #
+  # @example
+  #   client = StraddlePay::Client.new
+  #   client.charges.create(paykey: "pk_abc", amount: 10_000, ...)
   class Client
-    attr_reader :api_key, :base_url
+    # @return [String] API key used for authentication
+    attr_reader :api_key
+    # @return [String] base URL for API requests
+    attr_reader :base_url
 
+    # @param api_key [String, nil] override global API key
+    # @param base_url [String, nil] override global base URL
+    # @param logger [Logger, nil] override global logger
+    # @param open_timeout [Integer, nil] connection open timeout in seconds
+    # @param read_timeout [Integer, nil] response read timeout in seconds
+    # @raise [ArgumentError] if no API key is configured
     def initialize(api_key: nil, base_url: nil, logger: nil, open_timeout: nil, read_timeout: nil)
       configuration = StraddlePay.config
       @api_key      = api_key      || configuration.api_key
@@ -18,32 +32,61 @@ module StraddlePay
       raise ArgumentError, "Missing API key for StraddlePay" if @api_key.to_s.empty?
     end
 
+    # @return [Resources::Customers]
     def customers      = @customers ||= Resources::Customers.new(self)
+    # @return [Resources::Bridge]
     def bridge         = @bridge ||= Resources::Bridge.new(self)
+    # @return [Resources::Paykeys]
     def paykeys        = @paykeys ||= Resources::Paykeys.new(self)
+    # @return [Resources::Charges]
     def charges        = @charges ||= Resources::Charges.new(self)
+    # @return [Resources::Payouts]
     def payouts        = @payouts ||= Resources::Payouts.new(self)
+    # @return [Resources::Payments]
     def payments       = @payments ||= Resources::Payments.new(self)
+    # @return [Resources::FundingEvents]
     def funding_events = @funding_events ||= Resources::FundingEvents.new(self)
+    # @return [Resources::Reports]
     def reports        = @reports ||= Resources::Reports.new(self)
+    # @return [Resources::Embed]
     def embed          = @embed ||= Resources::Embed.new(self)
 
+    # @param path [String] API endpoint path
+    # @param params [Hash, nil] query parameters
+    # @param headers [Hash] additional HTTP headers
+    # @return [Hash] parsed response data
     def get(path, params: nil, headers: {})
       request(:get, path, params: params, headers: headers)
     end
 
+    # @param path [String] API endpoint path
+    # @param body [Hash, nil] request body (JSON-encoded)
+    # @param headers [Hash] additional HTTP headers
+    # @return [Hash] parsed response data
     def post(path, body = nil, headers: {})
       request(:post, path, body: body, headers: headers)
     end
 
+    # @param path [String] API endpoint path
+    # @param body [Hash, nil] request body (JSON-encoded)
+    # @param headers [Hash] additional HTTP headers
+    # @return [Hash] parsed response data
     def put(path, body = nil, headers: {})
       request(:put, path, body: body, headers: headers)
     end
 
+    # @param path [String] API endpoint path
+    # @param body [Hash, nil] request body (JSON-encoded)
+    # @param headers [Hash] additional HTTP headers
+    # @return [Hash] parsed response data
     def patch(path, body = nil, headers: {})
       request(:patch, path, body: body, headers: headers)
     end
 
+    # @param path [String] API endpoint path
+    # @param body [Hash, nil] request body (JSON-encoded)
+    # @param headers [Hash] additional HTTP headers
+    # @return [Hash] parsed response data
     def delete(path, body = nil, headers: {})
       request(:delete, path, body: body, headers: headers)
     end

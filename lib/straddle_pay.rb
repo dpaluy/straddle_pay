@@ -2,6 +2,18 @@
 
 require_relative "straddle_pay/version"
 
+# Ruby client for the Straddle payment infrastructure API.
+#
+# @example Global configuration
+#   StraddlePay.configure do |config|
+#     config.api_key  = ENV.fetch("STRADDLE_API_KEY")
+#     config.base_url = StraddlePay::Config::PRODUCTION_URL
+#   end
+#
+# @example Per-instance client
+#   client = StraddlePay::Client.new(api_key: "sk_test_...")
+#
+# @see https://straddle.dev/api-reference Straddle API Reference
 module StraddlePay
   autoload :Config, "straddle_pay/config"
   autoload :Client, "straddle_pay/client"
@@ -32,14 +44,20 @@ module StraddlePay
   end
 
   class << self
+    # @return [Config] current configuration instance
     def config
       @config ||= Config.new
     end
 
+    # Yields the global configuration for modification.
+    #
+    # @yieldparam config [Config] the configuration instance
     def configure
       yield(config)
     end
 
+    # Reset configuration to defaults.
+    # @return [void]
     def reset_configuration!
       @config = nil
     end

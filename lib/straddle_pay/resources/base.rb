@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 module StraddlePay
+  # Namespace for all API resource classes.
   module Resources
+    # Base class for API resources. Provides header extraction for
+    # Straddle-specific headers (account scoping, request tracking, idempotency).
     class Base
+      # @api private
       HEADER_KEYS = {
         straddle_account_id: "Straddle-Account-Id",
         request_id: "Request-Id",
@@ -10,6 +14,7 @@ module StraddlePay
         idempotency_key: "Idempotency-Key"
       }.freeze
 
+      # @param client [Client] the HTTP client instance
       def initialize(client)
         @client = client
       end
