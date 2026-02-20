@@ -45,4 +45,15 @@ module StraddlePay
 
   # Raised on timeout or connection failure.
   class NetworkError < Error; end
+
+  # Raised when webhook signature verification fails.
+  class SignatureVerificationError < Error
+    # @return [String, nil] the signature header that failed verification
+    attr_reader :sig_header
+
+    def initialize(message, sig_header: nil, **)
+      super(message, **)
+      @sig_header = sig_header
+    end
+  end
 end
