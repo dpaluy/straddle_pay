@@ -39,7 +39,7 @@ end
 ```ruby
 client = StraddlePay::Client.new(
   api_key: "sk_different_key",
-  base_url: "https://production.straddle.io",
+  base_url: "https://production.straddle.com",
   open_timeout: 10,
   read_timeout: 60
 )
@@ -50,7 +50,7 @@ client = StraddlePay::Client.new(
 | Attribute | ENV var | Default |
 |-----------|---------|---------|
 | `api_key` | `STRADDLE_API_KEY` | nil (required) |
-| `base_url` | `STRADDLE_BASE_URL` | `https://sandbox.straddle.io` |
+| `base_url` | `STRADDLE_BASE_URL` | `https://sandbox.straddle.com` |
 | `open_timeout` | `STRADDLE_OPEN_TIMEOUT` | 5 |
 | `read_timeout` | `STRADDLE_READ_TIMEOUT` | 30 |
 | `logger` | - | Rails.logger or $stderr |

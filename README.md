@@ -29,7 +29,7 @@ Per-instance overrides:
 ```ruby
 client = StraddlePay::Client.new(
   api_key: "sk_different_key",
-  base_url: "https://production.straddle.io"
+  base_url: "https://production.straddle.com"
 )
 ```
 
@@ -37,8 +37,8 @@ client = StraddlePay::Client.new(
 
 | Environment | URL |
 |-------------|-----|
-| Sandbox (default) | `https://sandbox.straddle.io` |
-| Production | `https://production.straddle.io` |
+| Sandbox (default) | `https://sandbox.straddle.com` |
+| Production | `https://production.straddle.com` |
 
 ### Rails
 

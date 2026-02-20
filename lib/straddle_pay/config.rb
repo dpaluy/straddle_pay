@@ -13,9 +13,9 @@ module StraddlePay
   #   end
   class Config
     # @return [String] Sandbox API base URL
-    SANDBOX_URL = "https://sandbox.straddle.io"
+    SANDBOX_URL = "https://sandbox.straddle.com"
     # @return [String] Production API base URL
-    PRODUCTION_URL = "https://production.straddle.io"
+    PRODUCTION_URL = "https://production.straddle.com"
 
     # @return [String, nil] API key for authentication
     attr_accessor :api_key
