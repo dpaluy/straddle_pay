@@ -23,6 +23,8 @@ module StraddlePay
   autoload :RateLimitError, "straddle_pay/errors"
   autoload :ServerError, "straddle_pay/errors"
   autoload :NetworkError, "straddle_pay/errors"
+  autoload :SignatureVerificationError, "straddle_pay/errors"
+  autoload :Webhook, "straddle_pay/webhook"
 
   module Resources
     autoload :AccountSettings, "straddle_pay/resources/account_settings"

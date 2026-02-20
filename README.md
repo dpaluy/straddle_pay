@@ -189,6 +189,61 @@ client.charges.create(
 
 Headers `request_id`, `correlation_id`, and `idempotency_key` are also supported on all methods.
 
+### Webhooks
+
+Straddle uses [Svix](https://www.svix.com/) for webhook delivery. Use `StraddlePay::Webhook.construct_event` to verify signatures and parse the payload. You'll find your webhook signing secret (starts with `whsec_`) in the Straddle Dashboard.
+
+In a Rails controller:
+
+```ruby
+class WebhooksController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
+  def create
+    event = StraddlePay::Webhook.construct_event(
+      request.body.read,
+      request.headers,
+      ENV.fetch("STRADDLE_WEBHOOK_SECRET")
+    )
+
+    case event["event_type"]
+    when StraddlePay::Webhook::Events::CHARGE_CREATED_V1
+      handle_charge_created(event["data"])
+    when StraddlePay::Webhook::Events::PAYOUT_EVENT_V1
+      handle_payout_event(event["data"])
+    when StraddlePay::Webhook::Events::CUSTOMER_EVENT_V1
+      handle_customer_event(event["data"])
+    end
+
+    head :ok
+  rescue StraddlePay::SignatureVerificationError => e
+    head :bad_request
+  end
+end
+```
+
+The default timestamp tolerance is 300 seconds. Pass `tolerance: nil` to skip the time check, or a custom value in seconds:
+
+```ruby
+# Skip timestamp validation
+event = StraddlePay::Webhook.construct_event(payload, headers, secret, tolerance: nil)
+
+# Custom tolerance (10 minutes)
+event = StraddlePay::Webhook.construct_event(payload, headers, secret, tolerance: 600)
+```
+
+`Webhook::Signature.generate_header` is available for generating valid headers in tests:
+
+```ruby
+headers = StraddlePay::Webhook::Signature.generate_header(
+  msg_id: "msg_test123",
+  timestamp: Time.now.to_i,
+  payload: body,
+  secret: "whsec_test_secret"
+)
+post webhooks_path, params: body, headers: headers
+```
+
 ## Error Handling
 
 ```ruby
