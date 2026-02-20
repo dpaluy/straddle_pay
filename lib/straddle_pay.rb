@@ -6,8 +6,8 @@ require_relative "straddle_pay/version"
 #
 # @example Global configuration
 #   StraddlePay.configure do |config|
-#     config.api_key  = ENV.fetch("STRADDLE_API_KEY")
-#     config.base_url = StraddlePay::Config::PRODUCTION_URL
+#     config.api_key     = ENV.fetch("STRADDLE_API_KEY")
+#     config.environment = :production
 #   end
 #
 # @example Per-instance client

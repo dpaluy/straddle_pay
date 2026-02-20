@@ -6,7 +6,7 @@ Idiomatic Ruby gem wrapping the [Straddle API](https://straddle.dev/api-referenc
 
 - **Pattern**: API wrapper gem following `reducto_ai` conventions
 - **HTTP**: Faraday ~> 2.9 with manual JSON encode/decode
-- **Config**: Global singleton (`StraddlePay.configure`) + per-instance client overrides
+- **Config**: Global singleton (`StraddlePay.configure`) + per-instance client overrides. Environment-based (`environment: :sandbox/:production`), `base_url` as escape hatch only
 - **Responses**: Raw Hashes, auto-unwrapped from Straddle `{meta, response_type, data}` envelope
 - **Errors**: Hierarchy with `error_type` and `error_items` for Straddle validation details
 - **Testing**: Minitest + WebMock, TDD workflow
@@ -68,8 +68,9 @@ Release is automated via `.github/workflows/release.yml` — pushing a `v*` tag 
 1. Bump `VERSION` in `lib/straddle_pay/version.rb`
 2. Run `bundle install` to update `Gemfile.lock`
 3. Run `bundle exec rake` to verify tests + rubocop
-4. Commit: `git add lib/straddle_pay/version.rb Gemfile.lock && git commit -m "bump to vX.Y.Z"`
-5. Tag and push: `git tag vX.Y.Z && git push origin master --tags`
+4. Update `CHANGELOG.md` with new version entry
+5. Commit: `git add lib/straddle_pay/version.rb Gemfile.lock CHANGELOG.md && git commit -m "bump to vX.Y.Z"`
+6. Tag and push: `git tag vX.Y.Z && git push origin master --tags`
 
 The CI workflow builds the gem and publishes to RubyGems.org via trusted publishing (OIDC, no API key needed).
 

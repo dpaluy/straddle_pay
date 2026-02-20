@@ -1,3 +1,17 @@
+## [0.3.0] - 2026-02-20
+
+### Changed
+- Replace `base_url` with `environment: :sandbox/:production` as primary config
+- `STRADDLE_ENVIRONMENT` env var replaces `STRADDLE_BASE_URL` for environment selection
+- `base_url` remains as escape hatch for custom URLs
+- `ENVIRONMENTS` hash replaces `SANDBOX_URL`/`PRODUCTION_URL` constants
+- Client accepts `environment:` param for per-instance override
+
+## [0.2.0] - 2026-02-20
+
+### Added
+- Webhook signature verification following Svix protocol
+
 ## [0.1.5] - 2026-02-20
 
 ### Fixed

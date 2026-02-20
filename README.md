@@ -19,9 +19,16 @@ Configure once:
 
 ```ruby
 StraddlePay.configure do |config|
-  config.api_key  = ENV.fetch("STRADDLE_API_KEY")
-  config.base_url = StraddlePay::Config::PRODUCTION_URL  # default: sandbox
+  config.api_key     = ENV.fetch("STRADDLE_API_KEY")
+  config.environment = :production  # default: :sandbox
 end
+```
+
+Or via environment variables:
+
+```sh
+STRADDLE_API_KEY=sk_live_...
+STRADDLE_ENVIRONMENT=production
 ```
 
 Per-instance overrides:
@@ -29,16 +36,9 @@ Per-instance overrides:
 ```ruby
 client = StraddlePay::Client.new(
   api_key: "sk_different_key",
-  base_url: "https://production.straddle.com"
+  environment: :production
 )
 ```
-
-### Environments
-
-| Environment | URL |
-|-------------|-----|
-| Sandbox (default) | `https://sandbox.straddle.com` |
-| Production | `https://production.straddle.com` |
 
 ### Rails
 
@@ -46,9 +46,9 @@ Create `config/initializers/straddle_pay.rb`:
 
 ```ruby
 StraddlePay.configure do |config|
-  config.api_key  = Rails.application.credentials.straddle_api_key
-  config.base_url = StraddlePay::Config::PRODUCTION_URL
-  config.logger   = Rails.logger
+  config.api_key     = Rails.application.credentials.straddle_api_key
+  config.environment = :production
+  config.logger      = Rails.logger
 end
 ```
 

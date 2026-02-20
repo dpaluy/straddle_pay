@@ -16,15 +16,16 @@ module StraddlePay
     attr_reader :base_url
 
     # @param api_key [String, nil] override global API key
-    # @param base_url [String, nil] override global base URL
+    # @param environment [Symbol, nil] :sandbox or :production (overrides global environment)
+    # @param base_url [String, nil] custom base URL (takes precedence over environment)
     # @param logger [Logger, nil] override global logger
     # @param open_timeout [Integer, nil] connection open timeout in seconds
     # @param read_timeout [Integer, nil] response read timeout in seconds
     # @raise [ArgumentError] if no API key is configured
-    def initialize(api_key: nil, base_url: nil, logger: nil, open_timeout: nil, read_timeout: nil)
+    def initialize(api_key: nil, environment: nil, base_url: nil, logger: nil, open_timeout: nil, read_timeout: nil)
       configuration = StraddlePay.config
-      @api_key      = api_key      || configuration.api_key
-      @base_url     = base_url     || configuration.base_url
+      @api_key      = api_key || configuration.api_key
+      @base_url     = base_url || resolve_base_url(environment, configuration)
       @logger       = logger       || configuration.logger
       @open_timeout = open_timeout || configuration.open_timeout
       @read_timeout = read_timeout || configuration.read_timeout
@@ -96,6 +97,16 @@ module StraddlePay
     end
 
     private
+
+    def resolve_base_url(environment, configuration)
+      if environment
+        Config::ENVIRONMENTS.fetch(environment.to_sym) do
+          raise ArgumentError, "Unknown environment: #{environment}"
+        end
+      else
+        configuration.base_url
+      end
+    end
 
     def request(method, path, body: nil, params: nil, headers: {})
       response = connection.public_send(method, path) do |req|

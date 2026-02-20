@@ -26,10 +26,19 @@ class ClientTest < Minitest::Test
     assert_equal "https://api.example.com", @client.base_url
   end
 
-  def test_instance_overrides_global_config
-    client = StraddlePay::Client.new(api_key: "override-key", base_url: "https://override.example.com")
-    assert_equal "override-key", client.api_key
+  def test_instance_overrides_with_environment
+    client = StraddlePay::Client.new(environment: :production)
+    assert_equal "https://production.straddle.com", client.base_url
+  end
+
+  def test_instance_overrides_with_base_url
+    client = StraddlePay::Client.new(base_url: "https://override.example.com")
     assert_equal "https://override.example.com", client.base_url
+  end
+
+  def test_base_url_wins_over_environment
+    client = StraddlePay::Client.new(environment: :production, base_url: "https://custom.example.com")
+    assert_equal "https://custom.example.com", client.base_url
   end
 
   # Resource accessors
