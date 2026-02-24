@@ -1,3 +1,8 @@
+## [0.3.1] - 2026-02-23
+
+### Fixed
+- `Paykeys#review` now requires `status:` keyword argument, matching `CustomerReviews#decision` pattern and the API contract
+
 ## [0.3.0] - 2026-02-20
 
 ### Changed

@@ -48,14 +48,15 @@ module StraddlePay
         @client.put("v1/paykeys/#{id}/cancel", options, headers: headers)
       end
 
-      # Submit a paykey for review.
+      # Submit a review decision for a paykey.
       #
       # @param id [String] paykey ID
-      # @return [Hash] review result
-      # @note Backward compatible method for status updates while in review state.
-      def review(id, **options)
-        headers = extract_headers(options)
-        @client.patch("v1/paykeys/#{id}/review", options, headers: headers)
+      # @param status [String] decision status (e.g. "approved", "rejected")
+      # @return [Hash] updated paykey
+      def review(id, status:, **options)
+        payload = { status: status, **options }.compact
+        headers = extract_headers(payload)
+        @client.patch("v1/paykeys/#{id}/review", payload, headers: headers)
       end
 
       # Get the current review details for a paykey.
